@@ -1,22 +1,35 @@
-export const colors = {
-  background: '#F8FAFC',
-  surface: '#FFFFFF',
-  navy: '#0F172A',
-  navySoft: '#172554',
-  blue: '#2563EB',
-  blueSoft: '#EFF6FF',
-  teal: '#0D9488',
-  tealSoft: '#F0FDFA',
-  success: '#16A34A',
-  warning: '#D97706',
-  danger: '#DC2626',
-  muted: '#64748B',
-  border: '#E2E8F0',
+import { colors } from './colors';
+import { spacing, spacingClasses } from './spacing';
+import { typography, typographyClasses } from './typography';
+
+export { colors, spacing, spacingClasses, typography, typographyClasses };
+
+export const radii = {
+  small: 8,
+  medium: 12,
+  large: 16,
+  pill: 999,
 } as const;
 
-export const spacing = {
-  page: 20,
-  section: 24,
-  card: 16,
-  control: 14,
+export const theme = {
+  colors,
+  spacing,
+  typography,
+  radii,
+  surfaces: {
+    screen: 'bg-background',
+    muted: 'bg-background-muted',
+    card: 'bg-surface border border-border rounded-xl shadow-sm',
+  },
+  text: {
+    primary: 'text-navy',
+    secondary: 'text-muted',
+    inverse: 'text-white',
+    link: 'text-blue',
+  },
+  controls: {
+    primary: 'bg-blue active:bg-blue-light',
+    secondary: 'bg-teal active:bg-teal-light',
+    outline: 'border border-border bg-surface active:bg-background-muted',
+  },
 } as const;

@@ -1,0 +1,16 @@
+import { AlertTriangle, Eye, FilePlus2, MapPin, ShieldCheck } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from '@/components/Button';
+import { Card } from '@/components/Card';
+import { StatusBadge } from '@/components/StatusBadge';
+import { mockPublicCases } from '@/services/mockPublicSearch';
+
+export default function PublicCaseDetailsScreen() {
+  const router = useRouter();
+  const item = mockPublicCases[0];
+  return <SafeAreaView className="flex-1 bg-background" edges={['top']}><ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}><View className="pt-6"><Text className="text-xs font-bold uppercase tracking-[2px] text-teal">Authorized public view</Text><Text className="mt-2 text-3xl font-bold text-navy">{item.name}</Text><View className="mt-3"><StatusBadge status={item.status} /></View></View><Card className="mt-6"><View className="flex-row items-center gap-3"><View className="h-12 w-12 items-center justify-center rounded-full bg-blue-50"><Eye stroke="#2563EB" size={23} /></View><View><Text className="text-base font-bold text-navy">Public search information</Text><Text className="mt-1 text-sm text-muted">Only approved details are shown.</Text></View></View><View className="mt-5 gap-3 border-t border-border pt-4"><Row label="Age" value={String(item.age)} /><Row label="Last known area" value={item.lastKnownArea} /><Row label="Last seen" value={item.lastSeen} />{item.priority ? <Row label="Priority" value={item.priority} valueClass={item.priority === 'Critical' ? 'text-danger' : 'text-warning'} /> : null}</View></Card><Card className="mt-4 border-amber-100 bg-amber-50"><View className="flex-row items-start gap-3"><ShieldCheck stroke="#D97706" size={20} /><Text className="flex-1 text-sm leading-5 text-muted">Only share information relevant to the search. Do not post private or sensitive information.</Text></View></Card><View className="mt-7 gap-3"><Button label="Report Possible Sighting" icon={MapPin} fullWidth onPress={() => router.push({ pathname: '/public-search-alert', params: { kind: 'sighting' } })} /><Button label="Submit Observation" icon={FilePlus2} variant="outline" fullWidth onPress={() => router.push({ pathname: '/public-search-alert', params: { kind: 'observation' } })} /></View><View className="mt-8"><Text className="mb-3 text-lg font-bold text-navy">Public users cannot</Text><Card><Restriction text="Close the case" /><Restriction text="Change search priority" /><Restriction text="Escalate independently" /><Restriction text="Notify police" /><Restriction text="Edit private case information" /></Card></View></ScrollView></SafeAreaView>;
+}
+function Row({ label, value, valueClass = 'text-navy' }: { label: string; value: string; valueClass?: string }) { return <View className="flex-row items-start justify-between gap-4"><Text className="text-sm text-muted">{label}</Text><Text className={`flex-1 text-right text-sm font-semibold ${valueClass}`}>{value}</Text></View>; }
+function Restriction({ text }: { text: string }) { return <View className="flex-row items-center gap-2 py-2"><AlertTriangle stroke="#64748B" size={15} /><Text className="text-sm text-muted">{text}</Text></View>; }
