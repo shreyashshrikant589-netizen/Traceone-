@@ -1,0 +1,53 @@
+{
+  "description": "SYNTHETIC DEMO DATA — NOT REAL MISSING-PERSON DATA",
+  "zones": [
+    {
+      "zone_id": "zone-a",
+      "distance_km": 1.2,
+      "time_elapsed_min": 35,
+      "crowd_density": 0.82,
+      "crowd_flow_score": 0.9,
+      "exit_distance": 0.7,
+      "witness_count": 3,
+      "recent_sighting_count": 2,
+      "direction_match": 0.9,
+      "destination_match": 0.85,
+      "coverage_percent": 25,
+      "connectivity_score": 0.8,
+      "zone_reopened": false,
+      "transport_proximity": 0.75
+    },
+    {
+      "zone_id": "zone-b",
+      "distance_km": 5.5,
+      "time_elapsed_min": 180,
+      "crowd_density": 0.3,
+      "crowd_flow_score": 0.3,
+      "exit_distance": 3.0,
+      "witness_count": 1,
+      "recent_sighting_count": 0,
+      "direction_match": 0.2,
+      "destination_match": 0.1,
+      "coverage_percent": 75,
+      "connectivity_score": 0.4,
+      "zone_reopened": true,
+      "transport_proximity": 0.2
+    },
+    {
+      "zone_id": "zone-c",
+      "distance_km": 0.9,
+      "time_elapsed_min": 20,
+      "crowd_density": 0.74,
+      "crowd_flow_score": 0.7,
+      "exit_distance": 0.6,
+      "witness_count": 2,
+      "recent_sighting_count": 3,
+      "direction_match": 0.8,
+      "destination_match": 0.9,
+      "coverage_percent": 30,
+      "connectivity_score": 0.85,
+      "zone_reopened": false,
+      "transport_proximity": 0.9
+    }
+  ]
+}
