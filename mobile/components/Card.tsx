@@ -1,19 +1,23 @@
-import { Pressable, View } from 'react-native';
 import type { ReactNode } from 'react';
+import { Pressable, View } from 'react-native';
 
 type CardProps = {
   children: ReactNode;
-  interactive?: boolean;
   onPress?: () => void;
   className?: string;
+  testID?: string;
 };
 
-export function Card({ children, interactive = false, onPress, className = '' }: CardProps) {
-  const cardClassName = `rounded-3xl border border-border bg-surface p-4 ${interactive ? 'active:opacity-80' : ''} ${className}`;
+export function Card({ children, onPress, className = '', testID }: CardProps) {
+  const cardClassName = `rounded-xl border border-border bg-surface p-4 shadow-sm ${className}`;
 
-  if (interactive) {
-    return <Pressable onPress={onPress} className={cardClassName}>{children}</Pressable>;
+  if (onPress) {
+    return (
+      <Pressable accessibilityRole="button" className={`${cardClassName} active:opacity-80`} onPress={onPress} testID={testID}>
+        {children}
+      </Pressable>
+    );
   }
 
-  return <View className={cardClassName}>{children}</View>;
+  return <View className={cardClassName} testID={testID}>{children}</View>;
 }

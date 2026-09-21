@@ -1,0 +1,8 @@
+import { Bell, CheckCheck } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { NotificationCard } from './NotificationCard';
+import { mockNotifications } from '@/services/mockNotifications';
+
+export function NotificationsExperience() { const [items, setItems] = useState(mockNotifications); const unread = items.filter((item) => item.unread).length; return <SafeAreaView className="flex-1 bg-background" edges={['top']}><View className="flex-1"><View className="flex-row items-start justify-between px-5 pb-5 pt-6"><View><Text className="text-xs font-bold uppercase tracking-[2px] text-teal">TraceOne updates</Text><Text className="mt-2 text-3xl font-bold text-navy">Notifications</Text><Text className="mt-2 text-base text-muted">Verified updates from your response teams.</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Mark all notifications read" className="rounded-xl border border-border bg-surface p-3" onPress={() => setItems((current) => current.map((item) => ({ ...item, unread: false })))}><CheckCheck stroke="#2563EB" size={20} /></Pressable></View><View className="flex-row items-center gap-2 px-5 pb-3"><Bell stroke="#0D9488" size={17} /><Text className="text-sm font-semibold text-muted">{unread} unread updates</Text></View><ScrollView showsVerticalScrollIndicator={false}>{items.map((item) => <NotificationCard key={item.id} item={item} onPress={() => setItems((current) => current.map((entry) => entry.id === item.id ? { ...entry, unread: false } : entry))} />)}</ScrollView></View></SafeAreaView>; }

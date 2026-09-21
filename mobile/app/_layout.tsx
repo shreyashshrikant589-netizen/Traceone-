@@ -1,55 +1,49 @@
-import { useFonts } from 'expo-font';
-import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { colors } from '@/constants/theme';
+import { Stack } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import '../global.css';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+const RNStyleSheet = StyleSheet as typeof StyleSheet & {
+  setFlag?: (name: string, value: string) => void;
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+RNStyleSheet.setFlag?.('darkMode', 'class');
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
   return (
-    <ThemeProvider value={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: colors.background, card: colors.surface, text: colors.navy, primary: colors.blue, border: colors.border } }}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'TraceOne' }} />
-      </Stack>
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="splash" />
+      <Stack.Screen name="landing" />
+      <Stack.Screen name="onboarding" />
+      <Stack.Screen name="auth" />
+      <Stack.Screen name="role-selection" />
+      <Stack.Screen name="register" />
+      <Stack.Screen name="forgot-password" />
+      <Stack.Screen name="dashboard" />
+      <Stack.Screen name="main" />
+      <Stack.Screen name="create-case" />
+      <Stack.Screen name="join-case" />
+      <Stack.Screen name="qr-scanner" />
+      <Stack.Screen name="case-preview" />
+      <Stack.Screen name="join-confirmation" />
+      <Stack.Screen name="search-session" />
+      <Stack.Screen name="active-search" />
+      <Stack.Screen name="ai-priority" />
+      <Stack.Screen name="possible-match" />
+      <Stack.Screen name="session-entry" />
+      <Stack.Screen name="case-details" />
+      <Stack.Screen name="case-timeline" />
+      <Stack.Screen name="cases" />
+      <Stack.Screen name="search" />
+      <Stack.Screen name="volunteer" />
+      <Stack.Screen name="public" />
+      <Stack.Screen name="public-case-details" />
+      <Stack.Screen name="public-search-alert" />
+      <Stack.Screen name="manager" />
+      <Stack.Screen name="reporter" />
+      <Stack.Screen name="admin" />
+      <Stack.Screen name="profile" />
+      <Stack.Screen name="notifications" />
+    </Stack>
   );
 }

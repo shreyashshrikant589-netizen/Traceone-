@@ -1,20 +1,35 @@
+import type { LucideIcon } from 'lucide-react-native';
+import { ArrowLeft } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
 
 type HeaderProps = {
-  eyebrow?: string;
   title: string;
-  actionLabel?: string;
+  subtitle?: string;
+  onBackPress?: () => void;
+  actionIcon?: LucideIcon;
   onActionPress?: () => void;
+  actionLabel?: string;
 };
 
-export function Header({ eyebrow, title, actionLabel, onActionPress }: HeaderProps) {
+export function Header({ title, subtitle, onBackPress, actionIcon: ActionIcon, onActionPress, actionLabel }: HeaderProps) {
   return (
-    <View className="flex-row items-start justify-between">
-      <View className="flex-1 pr-4">
-        {eyebrow ? <Text className="mb-2 text-xs font-bold uppercase tracking-[2px] text-teal">{eyebrow}</Text> : null}
-        <Text className="text-3xl font-bold tracking-tight text-navy">{title}</Text>
+    <View className="min-h-[52px] flex-row items-center justify-between gap-3">
+      <View className="flex-1 flex-row items-center gap-3">
+        {onBackPress ? (
+          <Pressable accessibilityLabel="Go back" accessibilityRole="button" className="rounded-lg p-2 active:bg-background-muted" onPress={onBackPress}>
+            <ArrowLeft stroke="#0F172A" size={21} />
+          </Pressable>
+        ) : null}
+        <View className="flex-1">
+          <Text className="text-2xl font-bold text-navy">{title}</Text>
+          {subtitle ? <Text className="mt-1 text-sm text-muted">{subtitle}</Text> : null}
+        </View>
       </View>
-      {actionLabel ? <Pressable accessibilityRole="button" onPress={onActionPress} className="rounded-full bg-blue-soft px-3 py-2 active:opacity-70"><Text className="text-sm font-semibold text-blue">{actionLabel}</Text></Pressable> : null}
+      {ActionIcon ? (
+        <Pressable accessibilityLabel={actionLabel} accessibilityRole="button" className="rounded-lg p-2 active:bg-background-muted" onPress={onActionPress}>
+          <ActionIcon stroke="#2563EB" size={21} />
+        </Pressable>
+      ) : null}
     </View>
   );
 }

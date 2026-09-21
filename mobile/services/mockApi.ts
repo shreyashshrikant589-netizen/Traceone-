@@ -1,0 +1,36 @@
+import type { TraceOneApi } from './api';
+
+export const mockApi: TraceOneApi = {
+  getCurrentUser: async () => null,
+  listCases: async () => [],
+  getCase: async () => null,
+  listSearchZones: async () => [],
+  listVolunteerAssignments: async () => [],
+  listEvidence: async () => [],
+  listSightings: async () => [],
+  listNotifications: async () => [],
+  listSearchSessions: async () => [],
+  createCase: async () => {
+    throw new Error('Mock case creation is intentionally not implemented.');
+  },
+  getCaseDetails: async () => { throw new Error('Mock case details are provided by the presentation fixture.'); },
+  listCaseTimeline: async () => { throw new Error('Mock timeline data is provided by the presentation fixture.'); },
+  previewJoinCase: async () => { throw new Error('Join preview is intentionally not connected.'); },
+  joinCase: async () => { throw new Error('Case joining is intentionally not connected.'); },
+  getMyAssignment: async () => null,
+  createEvidence: async () => { throw new Error('Evidence submission is intentionally not connected.'); },
+  createSearchNote: async () => { throw new Error('Search note submission is intentionally not connected.'); },
+  reportSighting: async () => { throw new Error('Sighting submission is intentionally not connected.'); },
+  listPublicCases: async () => [],
+  getPublicCase: async () => { throw new Error('Public case lookup is intentionally not connected.'); },
+  getPublicSearchAlert: async () => null,
+  getSearchPriority: async () => [],
+  getPossibleMatch: async () => null,
+  reviewPossibleMatch: async () => { throw new Error('Possible match review is intentionally not connected.'); },
+  getManagerOverview: async () => { throw new Error('Manager overview is presentation-only.'); },
+  publishCase: async () => { throw new Error('Case publishing is intentionally not connected.'); },
+  notifyPolice: async () => { throw new Error('Police notification is intentionally not connected.'); },
+  getProfile: async () => { throw new Error('Profile data is presentation-only.'); },
+  listSearchHistory: async () => [],
+  markNotificationRead: async () => undefined,
+};
