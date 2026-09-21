@@ -1,23 +1,28 @@
 import { Eye, EyeOff, Lock, Mail, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../services/authService';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { getRememberedEmail, isAuthenticated, login, setAuthenticatedSession } from '../services/authService';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@traceone.io');
+  const [email, setEmail] = useState(getRememberedEmail() ?? 'admin@traceone.io');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'admin' | 'manager'>('admin');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [rememberMe, setRememberMe] = useState(Boolean(getRememberedEmail()));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  if (isAuthenticated()) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
     setIsSubmitting(true);
 
-    const response = await login({ email, password });
+    const response = await login({ email, password, role });
 
     if (!response.ok) {
       setError(response.message ?? 'Invalid credentials. Please check your email and password.');
@@ -25,12 +30,8 @@ export default function LoginPage() {
       return;
     }
 
-    if (rememberMe) {
-      localStorage.setItem('traceone-admin-remembered', email);
-    } else {
-      localStorage.removeItem('traceone-admin-remembered');
-    }
-
+    setAuthenticatedSession(email, rememberMe);
+    setIsSubmitting(false);
     navigate('/dashboard', { replace: true });
   };
 
@@ -47,6 +48,21 @@ export default function LoginPage() {
         </div>
 
         <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate>
+          <div>
+            <label htmlFor="portal-role" className="mb-2 block text-sm font-medium text-slate-700">
+              Access level
+            </label>
+            <select
+              id="portal-role"
+              value={role}
+              onChange={(event) => setRole(event.target.value as 'admin' | 'manager')}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-slate-900 outline-none transition focus:border-blue focus:bg-white focus:ring-2 focus:ring-blue/20"
+            >
+              <option value="admin">Admin portal</option>
+              <option value="manager">Operations manager</option>
+            </select>
+          </div>
+
           <div>
             <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">
               Email address
@@ -137,6 +153,13 @@ export default function LoginPage() {
               <p className="mt-1 text-sm text-slate-600">All admin access is monitored and protected by role-based approvals.</p>
             </div>
           </div>
+        </div>
+
+        <div className="mt-5 text-center text-sm text-slate-600">
+          <span>Looking for the main TraceOne app? </span>
+          <a href="http://127.0.0.1:8082/auth" className="font-semibold text-blue hover:text-navy">
+            Open TraceOne sign in
+          </a>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { LockKeyhole, Mail } from 'lucide-react-native';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import { AuthFeedback } from '@/components/AuthFeedback';
 import { AuthShell } from '@/components/AuthShell';
 import { Button } from '@/components/Button';
@@ -27,6 +27,10 @@ export default function LoginScreen() {
     router.replace('/role-selection');
   };
 
+  const openAdminPortal = () => {
+    void Linking.openURL('http://localhost:5175/login');
+  };
+
   return (
     <AuthShell title="Welcome back" subtitle="Sign in to continue coordinating safer searches.">
       <View className="gap-5">
@@ -36,6 +40,10 @@ export default function LoginScreen() {
         <Link href="/forgot-password" asChild><Text className="self-end text-sm font-semibold text-blue">Forgot Password?</Text></Link>
         <Button label="Sign In" fullWidth onPress={submit} />
         <View className="flex-row items-center justify-center gap-1 pt-2"><Text className="text-sm text-muted">New to TraceOne?</Text><Link href="/register" asChild><Text className="text-sm font-semibold text-blue">Create account</Text></Link></View>
+        <View className="items-center pt-4">
+          <Text className="text-sm text-muted">Managing searches?</Text>
+          <Text accessibilityRole="link" className="pt-1 text-sm font-semibold text-blue" onPress={openAdminPortal}>Open Admin Command Center</Text>
+        </View>
       </View>
     </AuthShell>
   );

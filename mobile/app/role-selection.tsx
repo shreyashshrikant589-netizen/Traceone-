@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ArrowRight, BriefcaseBusiness, Check, ClipboardPenLine, ShieldCheck, UsersRound } from 'lucide-react-native';
+import { ArrowRight, Check, ClipboardPenLine, UsersRound } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
@@ -8,14 +8,13 @@ import { roleOptions, ROLE_STORAGE_KEY, type RoleOption, type UserRole } from '@
 
 const roleIcons = {
   VOLUNTEER: UsersRound,
-  CASE_MANAGER: BriefcaseBusiness,
   REPORTER: ClipboardPenLine,
-  ADMIN: ShieldCheck,
 } as const;
 
 export default function RoleSelectionScreen() {
   const router = useRouter();
   const [selectedRole, setSelectedRole] = useState<UserRole>();
+  const visibleRoles = roleOptions.filter((role) => role.id === 'VOLUNTEER' || role.id === 'REPORTER');
 
   const continueToRole = async () => {
     if (!selectedRole) return;
@@ -34,7 +33,7 @@ export default function RoleSelectionScreen() {
           <Text className="mt-3 text-base leading-6 text-muted">Choose the role that best describes how you’ll use TraceOne.</Text>
         </View>
         <View className="mt-8 gap-3">
-          {roleOptions.map((role) => <RoleCard key={role.id} role={role} selected={selectedRole === role.id} onPress={() => setSelectedRole(role.id)} />)}
+          {visibleRoles.map((role) => <RoleCard key={role.id} role={role} selected={selectedRole === role.id} onPress={() => setSelectedRole(role.id)} />)}
         </View>
         <View className="mt-8">
           <Button label="Continue" icon={ArrowRight} iconPosition="right" fullWidth disabled={!selectedRole} onPress={continueToRole} />
@@ -46,7 +45,7 @@ export default function RoleSelectionScreen() {
 }
 
 function RoleCard({ role, selected, onPress }: { role: RoleOption; selected: boolean; onPress: () => void }) {
-  const Icon = roleIcons[role.id];
+  const Icon = roleIcons[role.id as keyof typeof roleIcons];
   return (
     <Pressable accessibilityRole="radio" accessibilityState={{ checked: selected }} className={`rounded-2xl border p-4 ${selected ? 'border-blue bg-blue-50' : 'border-border bg-surface'} active:opacity-80`} onPress={onPress}>
       <View className="flex-row items-center gap-4">

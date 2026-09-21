@@ -1,10 +1,17 @@
 import { Bell, ChevronRight, LogOut, Menu, Search, UserCircle2, X } from 'lucide-react';
 import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { adminNavigation, quickStats } from '../constants/adminNavigation';
+import { logout } from '../services/authService';
 
 export default function AppLayout() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
@@ -57,7 +64,7 @@ export default function AppLayout() {
                   <div className="text-xs text-slate-500">Operations Lead</div>
                 </div>
               </div>
-              <button className="rounded-lg border border-slate-200 bg-white p-2 text-slate-600 hover:text-slate-900" aria-label="Logout">
+              <button type="button" onClick={handleLogout} className="rounded-lg border border-slate-200 bg-white p-2 text-slate-600 hover:text-slate-900" aria-label="Logout">
                 <LogOut size={16} />
               </button>
             </div>
