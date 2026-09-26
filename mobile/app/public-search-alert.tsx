@@ -1,0 +1,22 @@
+import { AlertTriangle, Calendar, CheckCircle2, MapPin } from 'lucide-react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
+import { Button } from '@/components/Button';
+import { BackButton } from '@/components/BackButton';
+import { PhotoPickerField } from '@/components/PhotoPickerField';
+
+export default function PublicSearchAlertScreen() {
+  const router = useRouter();
+  const { kind = 'sighting' } = useLocalSearchParams<{ kind?: string }>();
+  const sighting = kind === 'sighting';
+  const [location, setLocation] = useState('');
+  const [time, setTime] = useState('');
+  const [description, setDescription] = useState('');
+  const [additional, setAdditional] = useState('');
+  const [photoUri, setPhotoUri] = useState<string>();
+  const [success, setSuccess] = useState(false);
+  if (success) return <SafeAreaView className="flex-1 bg-background"><View className="flex-1 items-center justify-center px-7"><View className="h-16 w-16 items-center justify-center rounded-full bg-green-50"><CheckCircle2 stroke="#16A34A" size={34} /></View><Text className="mt-5 text-2xl font-bold text-navy">{sighting ? 'Possible sighting received' : 'Observation prepared'}</Text><Text className="mt-3 text-center text-base leading-6 text-muted">Your information is ready for authorized review. This is not a confirmed match.</Text><View className="mt-7 w-full"><Button label="Back to Public Search" fullWidth onPress={() => router.replace('/public')} /></View></View></SafeAreaView>;
+  return <SafeAreaView className="flex-1 bg-background"><KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}><ScrollView contentContainerClassName="px-6 pb-10" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}><View className="pt-5"><BackButton fallbackRoute="/public-case-details" variant="ghost" className="mb-3" /><Text className="text-xs font-bold uppercase tracking-[2px] text-teal">Public Search</Text></View><Text className="mt-3 text-3xl font-bold text-navy">{sighting ? 'Report Possible Sighting' : 'Submit Observation'}</Text><Text className="mt-2 text-base leading-6 text-muted">Share only relevant details. A coordinator must review every report.</Text><View className="mt-7 gap-4"><Field label="Location" placeholder="Where did this happen?" icon={MapPin} value={location} onChangeText={setLocation} /><Field label="Time" placeholder="When did this happen?" icon={Calendar} value={time} onChangeText={setTime} /><Field label="Description" placeholder={sighting ? 'Example: I saw a child wearing a blue shirt moving toward the parking area.' : 'Describe what you observed.'} multiline value={description} onChangeText={setDescription} /><PhotoPickerField value={photoUri} onChange={setPhotoUri} /><Field label="Additional Observation (optional)" placeholder="Anything else relevant?" multiline value={additional} onChangeText={setAdditional} /></View><View className="mt-6 flex-row items-start gap-3 rounded-xl border border-amber-100 bg-amber-50 p-4"><AlertTriangle stroke="#D97706" size={19} /><Text className="flex-1 text-sm leading-5 text-muted">Possible Sighting · Human Verification Required. Do not include private or sensitive information.</Text></View><View className="mt-7"><Button label={sighting ? 'Report Sighting' : 'Submit Observation'} fullWidth disabled={!location.trim() || !description.trim()} onPress={() => setSuccess(true)} /></View></ScrollView></KeyboardAvoidingView></SafeAreaView>;
+}
+function Field({ label, placeholder, value, onChangeText, multiline = false, icon: Icon }: { label: string; placeholder: string; value: string; onChangeText: (value: string) => void; multiline?: boolean; icon?: typeof MapPin }) { return <View className="gap-2"><Text className="text-sm font-semibold text-navy">{label}</Text><View className={`flex-row rounded-xl border border-border bg-surface px-4 ${multiline ? 'min-h-[120px]' : 'min-h-[52px] items-center'}`}>{Icon ? <Icon stroke="#64748B" size={18} /> : null}<TextInput accessibilityLabel={label} multiline={multiline} textAlignVertical={multiline ? 'top' : 'center'} className={`flex-1 px-2 py-3 text-base text-navy ${multiline ? 'min-h-[110px]' : ''}`} placeholder={placeholder} placeholderTextColor="#64748B" value={value} onChangeText={onChangeText} /></View></View>; }

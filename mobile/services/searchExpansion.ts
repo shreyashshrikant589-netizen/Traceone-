@@ -1,0 +1,1 @@
+export type SearchExpansion = { id: string; case_id: string; stage: string; previous_radius_m?: number | null; new_radius_m: number; reason: string; recommended_by: string; approved_by?: string | null; status: 'RECOMMENDED' | 'APPROVED' | 'REJECTED' | 'ACTIVE' | 'COMPLETED'; created_at: string };

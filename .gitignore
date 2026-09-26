@@ -1,0 +1,9 @@
+node_modules/
+mobile/node_modules/
+.expo/
+mobile/.expo/
+.env
+*.env
+mobile/.env
+.vscode/
+.vscode/

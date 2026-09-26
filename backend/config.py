@@ -4,9 +4,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    supabase_url: str = ""
-    supabase_anon_key: str = ""
-    supabase_service_role_key: str = ""
+    from pydantic import Field
+    supabase_url: str = Field(default="", env=None)
+    supabase_anon_key: str = Field(default="", env=None)
+    supabase_service_role_key: str = Field(default="", env=None)
     environment: str = "development"
     api_host: str = "0.0.0.0"
     api_port: int = 8000

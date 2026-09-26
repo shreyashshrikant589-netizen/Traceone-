@@ -1,0 +1,2 @@
+ALTER TABLE cases ADD COLUMN appearance JSONB;
+ALTER TABLE cases ADD COLUMN photo_url TEXT;

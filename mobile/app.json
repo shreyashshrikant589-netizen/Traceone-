@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "TraceOne",
+    "slug": "traceone-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "traceone",
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "com.traceone.mobile"
+    },
+    "ios": {
+      "bundleIdentifier": "com.traceone.mobile"
+    }
+  }
+}

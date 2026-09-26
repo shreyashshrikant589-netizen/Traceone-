@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.api.router import api_router
 from backend.config import settings
 
 app = FastAPI(title="TraceOne Backend API", version="0.1.0")
@@ -13,6 +14,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+app.include_router(api_router)
 
 
 @app.get("/")
