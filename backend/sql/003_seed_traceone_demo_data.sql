@@ -1,0 +1,21 @@
+-- 003_seed_traceone_demo_data.sql
+-- TraceOne Idempotent Demo Data Seed Reference
+-- Provisions demo accounts via Supabase Auth admin API, and seeds cases, profiles,
+-- zones, sessions, evidence, witness reports, timeline, and operational records.
+--
+-- Demo Accounts Provisioned (Password: Sheru@123):
+-- 1. CASE_MANAGER: traceone.manager@demo.traceone.app
+-- 2. VOLUNTEER 1:  traceone.volunteer1@demo.traceone.app
+-- 3. VOLUNTEER 2:  traceone.volunteer2@demo.traceone.app
+-- 4. REPORTER:     traceone.reporter@demo.traceone.app
+-- 5. VOLUNTEER 3:  traceone.volunteer3@demo.traceone.app
+--
+-- Seeded Cases:
+-- 1. TO-2048: Aarohi Sharma (Status: LOCAL_SEARCH, Priority: HIGH)
+-- 2. TO-2042: Meera Kapoor (Status: PUBLIC_SEARCH, Priority: CRITICAL)
+-- 3. TO-2035: Ishita Rao (Status: PUBLIC_SEARCH, Priority: HIGH)
+-- 4. TO-2019: Kavya Menon (Status: LOCAL_SEARCH_COMPLETED, Priority: MEDIUM)
+-- 5. TO-2004: Riya Das (Status: RESOLVED, Priority: LOW)
+--
+-- For programmatic seed execution and Auth user creation:
+-- Run: python backend/scripts/seed_demo_data.py

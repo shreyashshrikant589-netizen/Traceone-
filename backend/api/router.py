@@ -1,0 +1,25 @@
+from fastapi import APIRouter
+
+from backend.api.routes import ai_explanations, ai_priorities, ai_zone_priorities, cases, dashboard, evidence_graph, invites, members, notifications, police_notifications, possible_matches, profile, public_cases, reports, search_expansions, sessions, sync, timeline, volunteer_locations, zones
+
+api_router = APIRouter(prefix="/api/v1")
+api_router.include_router(profile.router)
+api_router.include_router(invites.router)
+api_router.include_router(cases.router)
+api_router.include_router(public_cases.router)
+api_router.include_router(police_notifications.router)
+api_router.include_router(ai_priorities.router)
+api_router.include_router(ai_zone_priorities.router)
+api_router.include_router(evidence_graph.router)
+api_router.include_router(ai_explanations.router)
+api_router.include_router(possible_matches.router)
+api_router.include_router(search_expansions.router)
+api_router.include_router(volunteer_locations.router)
+api_router.include_router(sync.router)
+api_router.include_router(dashboard.router)
+api_router.include_router(members.router)
+api_router.include_router(zones.router)
+api_router.include_router(sessions.router)
+api_router.include_router(reports.router)
+api_router.include_router(timeline.router)
+api_router.include_router(notifications.router)
