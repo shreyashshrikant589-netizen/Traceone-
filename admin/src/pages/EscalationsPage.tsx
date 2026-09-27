@@ -1,0 +1,24 @@
+import { AlertTriangle, Eye, Search, Siren } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import SectionCard from '../components/SectionCard';
+import { escalations } from '../data/safety';
+import type { EscalationStatus } from '../data/safety';
+
+const statuses: Array<'All' | EscalationStatus> = ['All', 'Pending', 'Under Review', 'Escalated', 'Resolved'];
+const statusStyles: Record<EscalationStatus, string> = { Pending: 'bg-amber-50 text-amber-700 border-amber-200', 'Under Review': 'bg-blue/10 text-blue border-blue/20', Escalated: 'bg-red-50 text-red-600 border-red-200', Resolved: 'bg-teal/10 text-teal border-teal/20' };
+const severityStyles = { Critical: 'bg-red-100 text-red-700 border-red-300', High: 'bg-amber-50 text-amber-700 border-amber-200', Medium: 'bg-blue/10 text-blue border-blue/20' };
+
+function Badge({ value, styles }: { value: string; styles: Record<string, string> }) {
+  return <span className={`inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${styles[value]}`}>{value}</span>;
+}
+
+export default function EscalationsPage() {
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState<(typeof statuses)[number]>('All');
+  const visibleEscalations = useMemo(() => escalations.filter((item) => {
+    const value = query.toLowerCase().trim();
+    return (status === 'All' || item.status === status) && (!value || item.id.toLowerCase().includes(value) || item.caseId.toLowerCase().includes(value) || item.trigger.toLowerCase().includes(value));
+  }), [query, status]);
+
+  return <div className="space-y-6"><div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between"><div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">Safety operations</p><h1 className="mt-2 text-3xl font-semibold text-navy">Escalations</h1><p className="mt-2 text-sm text-slate-500">Review operational triggers and route safety concerns to the right manager.</p></div><div className="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-soft">Mock safety queue</div></div><div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800"><AlertTriangle size={18} className="mt-0.5 shrink-0" /><p className="text-sm leading-6"><strong>Escalation decisions require human judgment.</strong> This interface does not trigger external notifications or emergency services.</p></div><section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{statuses.slice(1).map((item) => <div key={item} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p className="text-sm text-slate-500">{item}</p><p className="mt-2 text-3xl font-semibold text-navy">{escalations.filter((escalation) => escalation.status === item).length}</p></div>)}</section><SectionCard title="Escalation queue" subtitle="Safety review"><div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"><label className="flex min-h-11 flex-1 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-slate-500 lg:max-w-md"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search escalation, case, or trigger" className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" /></label><div className="flex gap-2 overflow-x-auto pb-1">{statuses.map((item) => <button key={item} onClick={() => setStatus(item)} className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold ${status === item ? 'bg-navy text-white' : 'border border-slate-200 bg-white text-slate-600'}`}>{item}</button>)}</div></div><div className="mt-5 overflow-x-auto"><table className="min-w-[900px] w-full text-left text-sm"><thead><tr className="border-b border-slate-200 text-slate-500">{['Escalation ID', 'Case', 'Trigger', 'Severity', 'Created time', 'Assigned manager', 'Status', ''].map((heading) => <th key={heading} className="pb-3 pr-4 font-medium">{heading}</th>)}</tr></thead><tbody>{visibleEscalations.map((item) => <tr key={item.id} className="border-b border-slate-100 last:border-0"><td className="py-4 pr-4 font-semibold text-blue">{item.id}</td><td className="py-4 pr-4 font-medium text-slate-900">{item.caseId}</td><td className="py-4 pr-4 text-slate-600">{item.trigger}</td><td className="py-4 pr-4"><Badge value={item.severity} styles={severityStyles} /></td><td className="py-4 pr-4 text-slate-600">{item.createdTime}</td><td className="py-4 pr-4 text-slate-600">{item.manager}</td><td className="py-4 pr-4"><Badge value={item.status} styles={statusStyles} /></td><td className="py-4"><button aria-label={`Review ${item.id}`} className="inline-flex rounded-lg border border-slate-200 p-2 text-slate-600 hover:text-blue"><Eye size={16} /></button></td></tr>)}</tbody></table></div></SectionCard></div>;
+}
